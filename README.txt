@@ -4,7 +4,7 @@ Alix BOUTHEROUE-DESMARAIS	Kenza FLIOU 	Yuliya LIM
 Encadré par Sophie Garnier
 
 
-Ce projet a pour but d'étudier les résultats de l’étude GHS (Gutenberg Health Study).
+Ce projet a pour but d'étudier les résultats de l’étude GHS (Gutenberg Health Study). Projet B indiqué dans l'énoncé.
 Les dossiers .bed. bim, .fam, .ped, .map des chromosomes 2, 5, 13 et 16 de la cohorte de 3300 individus nous ont été fournis. Ainsi que les fichiers phenotype_plink.txt et covar_plink.txt.
 
 PACKAGES REQUIS
