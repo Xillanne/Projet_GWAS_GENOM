@@ -1,0 +1,54 @@
+---
+title: "Plot_GWAS_concat"
+output: html_document
+date: "2024-01-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load data}
+results2 <- read.table("QTL results/chr2_QTL.out", header=TRUE)
+results5 <- read.table("QTL results/chr5_QTL.out", header=TRUE)
+results13 <- read.table("QTL results/chr13_QTL_new.out", header=TRUE)
+results16 <- read.table("QTL results/chr16_QTL.filtered.out", header=TRUE)
+```
+
+```{r fill chromosome and concatenate}
+results2$chromosome <- 2
+results5$chromosome <- 5
+results13$chromosome <- 13
+results16$chromosome <- 16
+
+results_concat <- do.call("rbind", (list(results2,results5,results13,results16)))
+```
+
+```{r create input for manhattan}
+# Create a new dataframe for plotting
+DATA <- data.frame(SNP = results_concat$rsid,
+                   CHR = results_concat$chromosome,
+                   BP = results_concat$position,
+                   P = results_concat$frequentist_add_pvalue)
+```
+
+```{r setting trshold}
+# Get SNPs having a p-value inferior to 5E-8
+  threshold <-  5E-8
+  DATA_significant <- subset(DATA, P < threshold)
+  snpsOfInterest<-DATA_significant$SNP
+  snpsOfInterest
+```
+
+```{r Manhattan}
+pdf('Manhattan_plot_ApoA1_allCHR.pdf')
+manhattan(DATA, main="Manhattan plot for ApoA1 associations", ylim = c(0, 15), cex = 0.6, cex.axis = 0.9, col = c("blue4", "orange3"),suggestiveline=F, highlight = snpsOfInterest, annotatePval = threshold, annotateTop = FALSE)
+dev.off()
+```
+```{r QQ-plot}
+# Save QQ plot to a PDF file
+pdf(paste0('QQ_plot.pdf'))
+print(qq(DATA$P))
+dev.off()
+```
